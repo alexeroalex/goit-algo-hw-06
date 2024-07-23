@@ -16,7 +16,7 @@ class Name(Field):
     """Поле імені"""
 
     def __init__(self, value):
-        if value is '':
+        if value == '':
             raise ValueError("Name cannot be empty")
         else:
             super().__init__(value)
@@ -27,7 +27,7 @@ class Phone(Field):
 
     def __init__(self, value):
         # Верифікація номера (має складатися з 10 цифр)
-        if re.match(r'\d{10}', value):
+        if re.match(r'^\d{10}$', value):
             super().__init__(value)
         else:
             raise ValueError("Incorrect phone number")
@@ -58,13 +58,10 @@ class Record:
         """
 
         # Змінна для збереження конкретного об'єкта зі списку для видалення (інакше - змінювати метод __eq__)
-        phone_to_remove = None
         for p in self.phones:
             if p.value == phone:
-                phone_to_remove = p
+                self.phones.remove(p)
                 break
-        if phone_to_remove:
-            self.phones.remove(phone_to_remove)
         else:
             raise ValueError(f"Phone number {phone} not found")
 
